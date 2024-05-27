@@ -10,8 +10,12 @@ class TeNotification extends StatefulWidget {
 }
 
 class _TeNotificationState extends State<TeNotification> {
+  var size, width, height;
   @override
   Widget build(BuildContext context) {
+    size = MediaQuery.of(context).size;
+    height = size.height;
+    width = size.width;
     return Scaffold(
       appBar: AppBar(
         title: Text(
@@ -24,11 +28,11 @@ class _TeNotificationState extends State<TeNotification> {
         children: [
           Padding(
             padding: const EdgeInsets.only(
-              left: 20,
+              left: 15,right: 15
             ),
             child: Container(
-              height: 150,
-              width: 370,
+              height: height/5.3,
+              width: width/1,
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(6),
                 color: Color(0xF4472B2),
@@ -51,7 +55,7 @@ class _TeNotificationState extends State<TeNotification> {
                   ),
                   Expanded(
                     child: Padding(
-                      padding: const EdgeInsets.all(8.0),
+                      padding: const EdgeInsets.only(left: 15,top: 10),
                       child: Text("We are delighted to announce the upcoming Onam Program, a celebration of joy, culture, and togetherness! The college principal has approved the event, and we can't wait to make it a memorable occasion for all."),
                     ))
                 ],

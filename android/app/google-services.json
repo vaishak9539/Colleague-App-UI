@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "378553258239",
+    "project_id": "colleague-app-d0247",
+    "storage_bucket": "colleague-app-d0247.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:378553258239:android:aba6c0226f6eb041fe3cca",
+        "android_client_info": {
+          "package_name": "com.example.colleagueapp"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAovNjdWttfmZFm4mYOAM0GmFANNU6r75E"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
