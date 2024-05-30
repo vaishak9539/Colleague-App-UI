@@ -5,8 +5,9 @@ import 'package:colleagueapp/teacher/te_notification.dart';
 import 'package:colleagueapp/teacher/te_profile.dart';
 import 'package:colleagueapp/teacher/te_student_details.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:google_fonts/google_fonts.dart';
-
+import 'package:shared_preferences/shared_preferences.dart';
 
 class Student extends StatefulWidget {
   const Student({super.key});
@@ -16,6 +17,12 @@ class Student extends StatefulWidget {
 }
 
 class _StudentState extends State<Student> {
+  Future<void> cheking() async {
+    SharedPreferences spref = await SharedPreferences.getInstance();
+    String? teId = spref.getString("TeacherId");
+    print('Shared Preference Teacher ID: $teId');
+  }
+
   var size, width, height;
   @override
   Widget build(BuildContext context) {
@@ -42,8 +49,12 @@ class _StudentState extends State<Student> {
                   Padding(
                     padding: const EdgeInsets.only(left: 50),
                     child: InkWell(
-                      onTap: () => Navigator.push(context,
-                          MaterialPageRoute(builder: (ctx) => TeProfile())),
+                      onTap: () {
+                        cheking();
+
+                        Navigator.push(context,
+                            MaterialPageRoute(builder: (ctx) => TeProfile()));
+                      },
                       child: SizedBox(
                         height: 25,
                         width: 25,
@@ -68,50 +79,75 @@ class _StudentState extends State<Student> {
                 ],
               ),
             ),
-          ), 
-          StreamBuilder(
-            stream: FirebaseFirestore.instance.collection("Student Sign").snapshots(),
-           builder: (context,AsyncSnapshot<QuerySnapshot> snapshot){
-            return Expanded(
-              child: ListView.builder(
-                itemCount: snapshot.data!.docs.length,
-                itemBuilder: (ctx,index){
-                  var studentId = snapshot.data!.docs[index];
-                  return  Padding(
-                    padding: const EdgeInsets.only(left: 4,right: 4),
-                    child: Card(
-                      color: Colors.blue[100],
-                      child: ListTile(
-                        onTap: () {
-                          Navigator.push(context, MaterialPageRoute(builder: (context) => TeStudentDetails(),));
-                        },
-                                leading: SizedBox(
-                                  width: 35,
-                                  child: Image.asset("assets/images/User 1.png"),
-                                ),
-                                title: Text(
-                                  
-                                  studentId["Name"],
-                                  style: GoogleFonts.poppins(
-                                    textStyle: TextStyle(
-                                        fontSize: 14, fontWeight: FontWeight.w400),
+          ),
+          Expanded(
+            child: StreamBuilder(
+                stream: FirebaseFirestore.instance
+                    .collection("StudentSign")
+                    .snapshots(),
+                builder: (context, AsyncSnapshot<QuerySnapshot> snapshot) {
+                  if (snapshot.connectionState == ConnectionState.waiting) {
+                    return Center(child: CircularProgressIndicator());
+                  }
+                  if (snapshot.hasError) {
+                    return Center(child: Text("Error: ${snapshot.error}"));
+                  }
+                  if (snapshot.hasData && snapshot.data!.docs.isEmpty) {
+                    return Center(
+                      child: Text("No Task Addad",
+                          style: TextStyle(
+                            fontWeight: FontWeight.w500,
+                            color: Colors.black,
+                            fontSize: 18,
+                          )),
+                    );
+                  }
+                  if (snapshot.hasData) {
+                    return ListView.builder(
+                        itemCount: snapshot.data!.docs.length,
+                        itemBuilder: (ctx, index) {
+                          var studentId = snapshot.data!.docs[index];
+                          return Padding(
+                            padding: const EdgeInsets.only(left: 4, right: 4),
+                            child: Card(
+                              color: Colors.blue[100],
+                              child: ListTile(
+                                  onTap: () {
+                                    Navigator.push(
+                                        context,
+                                        MaterialPageRoute(
+                                          builder: (context) =>
+                                              TeStudentDetails(stId: studentId),
+                                        ));
+                                  },
+                                  leading: SizedBox(
+                                    width: 35,
+                                    child:
+                                        Image.asset("assets/images/User 1.png"),
                                   ),
-                                ),
-                                subtitle: Text(
-                                  studentId["Department"],
-                                  style: GoogleFonts.poppins(
-                                    textStyle: TextStyle(
-                                        fontSize: 14, fontWeight: FontWeight.w400),
+                                  title: Text(
+                                    studentId["Name"],
+                                    style: GoogleFonts.poppins(
+                                      textStyle: TextStyle(
+                                          fontSize: 14,
+                                          fontWeight: FontWeight.w400),
+                                    ),
                                   ),
-                                )
-                      ),
-                    ),
-                  );
-                }
-              ),
-            );
-           }
-           )
+                                  subtitle: Text(
+                                    studentId["Department"],
+                                    style: GoogleFonts.poppins(
+                                      textStyle: TextStyle(
+                                          fontSize: 14,
+                                          fontWeight: FontWeight.w400),
+                                    ),
+                                  )),
+                            ),
+                          );
+                        });
+                  }
+                  return Center(child: CircularProgressIndicator());
+                }),
+          )
         ],
       ),
     );

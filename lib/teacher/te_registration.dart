@@ -31,10 +31,10 @@ class _TeRegistrationState extends State<TeRegistration> {
         String teacherAuthenticationUid = userCredential.user!.uid;
 
         await FirebaseFirestore.instance
-            .collection("Teacher Sign")
+            .collection("TeacherSign")
             .doc(teacherAuthenticationUid)
             .set({
-          "name": controllerName.text,
+          "Name": controllerName.text,
           "Department": controllerDepartment.text,
           "PhoneNumber": controllerPhoneNumber.text,
           "Email": controllerEmail.text,

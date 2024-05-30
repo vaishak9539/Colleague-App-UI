@@ -1,7 +1,9 @@
-// ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables, prefer_typing_uninitialized_variables, use_full_hex_values_for_flutter_colors
+// ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables, prefer_typing_uninitialized_variables, avoid_print
 
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:colleagueapp/te_edit_profile.dart';
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class TeProfile extends StatefulWidget {
   const TeProfile({super.key});
@@ -11,25 +13,48 @@ class TeProfile extends StatefulWidget {
 }
 
 class _TeProfileState extends State<TeProfile> {
-  final formkey=GlobalKey<FormState>();
-  final TextEditingController editName=TextEditingController();
-  final TextEditingController editDepartment=TextEditingController();
-  final TextEditingController editRegisterNo=TextEditingController();
-  final TextEditingController editPhoneNo=TextEditingController();
-  final TextEditingController editEmailId=TextEditingController();
+  final formkey = GlobalKey<FormState>();
+  final TextEditingController profileName = TextEditingController();
+  final TextEditingController profileDepartment = TextEditingController();
+  final TextEditingController profilePhoneNo = TextEditingController();
+  final TextEditingController profileEmailId = TextEditingController();
 
-  Future<void>teacherProfileEdit()async{
-    await FirebaseFirestore.instance.collection("Teacher Profile").add({
-      "Name" : editName.text,
-      "Department" : editDepartment.text,
-      "RegisterNo" : editRegisterNo.text,
-      "PhoneNo" : editPhoneNo.text,
-      "EmailId" : editEmailId.text,
-    });
+  Future<void> fetchTeacherDetails() async {
+    try {
 
-    
+      SharedPreferences spref = await SharedPreferences.getInstance();
+      String? teId = spref.getString("TeacherId");
+      print('Shared Preference Teacher ID: $teId');
+      
+      if (teId!.isNotEmpty) {
+        Stream<DocumentSnapshot> teacherStream = FirebaseFirestore.instance
+            .collection("TeacherSign")
+            .doc(teId)
+            .snapshots();
+
+        teacherStream.listen((teacherSnapshot) {
+          if (teacherSnapshot.exists) {
+            setState(() {
+              profileName.text = teacherSnapshot["Name"] ?? '';
+              profileDepartment.text = teacherSnapshot["Department"] ?? '';
+              profilePhoneNo.text = teacherSnapshot["PhoneNumber"] ?? '';
+              profileEmailId.text = teacherSnapshot["Email"] ?? '';
+            });
+          }
+        });
+      }
+    } catch (e) {
+      print('Error Fetching teacher details : $e');
+    }
   }
+
   var size, width, height;
+  @override
+  void initState() {
+    super.initState();
+    fetchTeacherDetails();
+  }
+
   @override
   Widget build(BuildContext context) {
     size = MediaQuery.of(context).size;
@@ -42,6 +67,14 @@ class _TeProfileState extends State<TeProfile> {
           style: TextStyle(fontWeight: FontWeight.w500, fontSize: 18),
         ),
         centerTitle: true,
+        actions: [
+          Padding(
+            padding: const EdgeInsets.only(right: 20),
+            child: IconButton(onPressed: (){
+              Navigator.push(context, MaterialPageRoute(builder: (context) => TeProfileUpdate(),));
+            }, icon:Icon(Icons.edit_square) ),
+          )
+        ],
       ),
       body: Form(
         key: formkey,
@@ -66,7 +99,8 @@ class _TeProfileState extends State<TeProfile> {
                     padding: const EdgeInsets.only(left: 30, top: 30),
                     child: Text(
                       "Name",
-                      style: TextStyle(fontWeight: FontWeight.w400, fontSize: 15),
+                      style:
+                          TextStyle(fontWeight: FontWeight.w400, fontSize: 15),
                     ),
                   )
                 ],
@@ -76,12 +110,13 @@ class _TeProfileState extends State<TeProfile> {
                   Padding(
                     padding: const EdgeInsets.only(left: 25, top: 6),
                     child: SizedBox(
-                      height: height/17,
-                      width: width/1.2,
+                      height: height / 17,
+                      width: width / 1.2,
                       child: TextFormField(
-                        controller: editName,
+                        readOnly: true,
+                        controller: profileName,
                         decoration: InputDecoration(
-                          hintText: "Thomas shelby",
+                            // hintText: "Thomas shelby",
                             border: OutlineInputBorder(
                                 borderRadius: BorderRadius.circular(6))),
                       ),
@@ -95,7 +130,8 @@ class _TeProfileState extends State<TeProfile> {
                     padding: const EdgeInsets.only(left: 30, top: 15),
                     child: Text(
                       "Department",
-                      style: TextStyle(fontWeight: FontWeight.w400, fontSize: 15),
+                      style:
+                          TextStyle(fontWeight: FontWeight.w400, fontSize: 15),
                     ),
                   )
                 ],
@@ -105,41 +141,13 @@ class _TeProfileState extends State<TeProfile> {
                   Padding(
                     padding: const EdgeInsets.only(left: 25, top: 6),
                     child: SizedBox(
-                      height:height/17,
-                      width: width/1.2,
+                      height: height / 17,
+                      width: width / 1.2,
                       child: TextFormField(
-                        controller: editDepartment,
+                        readOnly: true,
+                        controller: profileDepartment,
                         decoration: InputDecoration(
-                          hintText: "B.come",
-                            border: OutlineInputBorder(
-                                borderRadius: BorderRadius.circular(6))),
-                      ),
-                    ),
-                  ),
-                ],
-              ),
-              Row(
-                children: [
-                  Padding(
-                    padding: const EdgeInsets.only(left: 30, top: 15),
-                    child: Text(
-                      "Register No",
-                      style: TextStyle(fontWeight: FontWeight.w400, fontSize: 15),
-                    ),
-                  )
-                ],
-              ),
-              Row(
-                children: [
-                  Padding(
-                    padding: const EdgeInsets.only(left: 25, top: 6),
-                    child: SizedBox(
-                      height: height/17,
-                      width: width/1.2,
-                      child: TextFormField(
-                        controller: editRegisterNo,
-                        decoration: InputDecoration(
-                          hintText: "000000",
+                            // hintText: "B.come",
                             border: OutlineInputBorder(
                                 borderRadius: BorderRadius.circular(6))),
                       ),
@@ -153,7 +161,8 @@ class _TeProfileState extends State<TeProfile> {
                     padding: const EdgeInsets.only(left: 30, top: 15),
                     child: Text(
                       "Phone No",
-                      style: TextStyle(fontWeight: FontWeight.w400, fontSize: 15),
+                      style:
+                          TextStyle(fontWeight: FontWeight.w400, fontSize: 15),
                     ),
                   )
                 ],
@@ -163,12 +172,13 @@ class _TeProfileState extends State<TeProfile> {
                   Padding(
                     padding: const EdgeInsets.only(left: 25, top: 6),
                     child: SizedBox(
-                      height: height/17,
-                      width: width/1.2,
+                      height: height / 17,
+                      width: width / 1.2,
                       child: TextFormField(
-                        controller: editPhoneNo,
+                        readOnly: true,
+                        controller: profilePhoneNo,
                         decoration: InputDecoration(
-                          hintText: "9038645914",
+                            // hintText: "9038645914",
                             border: OutlineInputBorder(
                                 borderRadius: BorderRadius.circular(6))),
                       ),
@@ -182,7 +192,8 @@ class _TeProfileState extends State<TeProfile> {
                     padding: const EdgeInsets.only(left: 30, top: 15),
                     child: Text(
                       "Email ID",
-                      style: TextStyle(fontWeight: FontWeight.w400, fontSize: 15),
+                      style:
+                          TextStyle(fontWeight: FontWeight.w400, fontSize: 15),
                     ),
                   )
                 ],
@@ -192,12 +203,13 @@ class _TeProfileState extends State<TeProfile> {
                   Padding(
                     padding: const EdgeInsets.only(left: 25, top: 6),
                     child: SizedBox(
-                      height: height/17,
-                      width: width/1.2,
+                      height: height / 17,
+                      width: width / 1.2,
                       child: TextFormField(
-                        controller: editEmailId,
+                        readOnly: true,
+                        controller: profileEmailId,
                         decoration: InputDecoration(
-                          hintText: "shelby@gmail.com",
+                            // hintText: "shelby@gmail.com",
                             border: OutlineInputBorder(
                                 borderRadius: BorderRadius.circular(6))),
                       ),
@@ -205,38 +217,7 @@ class _TeProfileState extends State<TeProfile> {
                   ),
                 ],
               ),
-              SizedBox(
-                height: height/17
-              ),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  InkWell(
-                    onTap: () {
-                      teacherProfileEdit();
-                      Navigator.pop(context);
-                    },
-                    child: Container(
-                      height: height/17,
-                      width: width/1.2,
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(6),
-                        color: Color(0xffb4472B2)
-                    
-                      ),
-                      child: Center(
-                        child: Text("Submit",
-                        style: TextStyle(
-                          fontSize: 15,
-                          fontWeight: FontWeight.w600,
-                          color: Colors.white
-                        ),
-                        ),
-                      ),
-                    ),
-                  )
-                ],
-               )
+              SizedBox(height: height / 17),
             ],
           ),
         ),

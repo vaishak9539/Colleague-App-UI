@@ -26,19 +26,24 @@ class _TeSignInState extends State<TeSignIn> {
       String userPassword = controllerPassword.text.trim();
 
       var querySnapshot = await FirebaseFirestore.instance
-          .collection('Teacher Sign')
+          .collection('TeacherSign')
           .where('Email', isEqualTo: userEmail)
           .limit(1)
           .get();
 
       if (querySnapshot.docs.isNotEmpty) {
         var userData = querySnapshot.docs.first.data();
-        var passwordFromDB = userData['Password'] ;
+        var passwordFromDB = userData['Password'];
         if (passwordFromDB != null && passwordFromDB == userPassword) {
-          var teacherUid = userData['TeacherId'] ;
+          var teacherUid = userData['TeacherId'];
           if (teacherUid != null) {
-            await teacherSaveData(teacherUid);
+            // await teacherSaveData(teacherUid);
+            SharedPreferences spref = await SharedPreferences.getInstance();
+            await spref.setString("TeacherId", teacherUid);
           }
+          SharedPreferences spref = await SharedPreferences.getInstance();
+          String? teId = spref.getString("TeacherId");
+          print('Shared Preference Teacher ID: $teId');
 
           Navigator.push(context,
               MaterialPageRoute(builder: (context) => TeStudentList()));
@@ -79,10 +84,7 @@ class _TeSignInState extends State<TeSignIn> {
     }
   }
 
-  Future<void> teacherSaveData(String teacheruid) async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    await prefs.setString("Teacher Uid", teacheruid);
-  }
+  
 
   var size, width, height;
 
@@ -180,6 +182,7 @@ class _TeSignInState extends State<TeSignIn> {
               ),
               InkWell(
                 onTap: () {
+                print('TeacherId');
                   teacherSignInWithEmailAndPassword();
                 },
                 child: Container(

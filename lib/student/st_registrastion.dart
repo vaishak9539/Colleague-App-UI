@@ -33,7 +33,7 @@ class _StRegistrationState extends State<StRegistration> {
         String studentAuthenticationUid = userCredential.user!.uid;
 
         await FirebaseFirestore.instance
-            .collection("Student Sign")
+            .collection("StudentSign")
             .doc(studentAuthenticationUid)
             .set({
           "Name": controllerName.text,
@@ -41,9 +41,9 @@ class _StRegistrationState extends State<StRegistration> {
           "RegisterNo": controllerRegisterNo.text,
           "PhoneNumber": controllerPhoneNumber.text,
           "Email": controllerEmail.text,
-          "password": controllerPassword.text,
+          "Password": controllerPassword.text,
           'StudentId': studentAuthenticationUid,
-          'created at' : DateTime.now()
+          'Created at' : DateTime.now()
         });
         Navigator.push(
             context,
@@ -224,7 +224,7 @@ class _StRegistrationState extends State<StRegistration> {
                               if (value3 == null || value3.isEmpty) {
                                 return "Please enter your number";
                               }
-                              if (value3.length <= 10) {
+                              if (value3.length < 10) {
                                 return "Password must have at least 10 characters";
                               }
                               return null;

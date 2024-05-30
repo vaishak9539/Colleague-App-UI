@@ -131,7 +131,7 @@ class _StFoodFestivalDetailsState extends State<StFoodFestivalDetails> {
           ),
           Expanded(
             child: ListView.builder(
-                itemCount: 5,
+                itemCount: 4,
                 itemBuilder: (ctx, context) {
                   return Padding(
                     padding:
@@ -177,7 +177,7 @@ class _StFoodFestivalDetailsState extends State<StFoodFestivalDetails> {
                   },
                   child: Container(
                     height: 45,
-                    width: 350,
+                    width: 300,
                     decoration: BoxDecoration(
                         borderRadius: BorderRadius.circular(6),
                         color: Color(0xffb4472B2)),

@@ -60,7 +60,7 @@ class _StThankYouState extends State<StThankYou> {
             ],
           ),
           SizedBox(
-            height: 160,
+            height: 90,
           ),
           Padding(
             padding: const EdgeInsets.only(top: 80),
@@ -74,7 +74,7 @@ class _StThankYouState extends State<StThankYou> {
                   },
                   child: Container(
                     height: 45,
-                    width: 350,
+                    width: 320,
                     decoration: BoxDecoration(
                         borderRadius: BorderRadius.circular(6),
                         color: Color(0xffb4472B2)),

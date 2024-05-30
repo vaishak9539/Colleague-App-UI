@@ -26,7 +26,7 @@ class _AdLoginState extends State<AdLogin> {
 
       try {
         var querySnapshot = await FirebaseFirestore.instance
-            .collection("Admin Sign")
+            .collection("AdminSign")
             .where("Email", isEqualTo: adminEmail)
             .limit(1)
             .get();
@@ -35,7 +35,7 @@ class _AdLoginState extends State<AdLogin> {
           var adminData = querySnapshot.docs.first.data();
           var passwordFromDB = adminData["Password"];
           if (passwordFromDB != null && passwordFromDB == adminPassword) {
-            var adminID = adminData["Admin ID"];
+            var adminID = adminData["AdminID"];
             if (adminID != null) {
               await adminSaveData(adminID);
               if (mounted) {

@@ -26,14 +26,14 @@ class _StSignInState extends State<StSignIn> {
       String studentPassword = stcontrollerPassword.text.trim();
 
       var querySnapshot = await FirebaseFirestore.instance
-          .collection("Student Sign")
+          .collection("StudentSign")
           .where("Email", isEqualTo: studentEmail)
           .limit(1)
           .get();
 
       if (querySnapshot.docs.isNotEmpty) {
         var studentsData = querySnapshot.docs.first.data();
-        var passwordFromDB = studentsData['password'];
+        var passwordFromDB = studentsData['Password'];
         if (passwordFromDB != null && passwordFromDB == studentPassword) {
           var studentUid = studentsData["StudentId"];
           if (studentUid != null) {

@@ -12,8 +12,12 @@ class FoodFestivalDetails extends StatefulWidget {
 }
 
 class _FoodFestivalDetailsState extends State<FoodFestivalDetails> {
+  var size, width, height;
   @override
   Widget build(BuildContext context) {
+    size = MediaQuery.of(context).size;
+    height = size.height;
+    width = size.width;
     return Scaffold(
       appBar: AppBar(
         title: Text("Details",
@@ -47,72 +51,94 @@ class _FoodFestivalDetailsState extends State<FoodFestivalDetails> {
                     ),
                   ],
                 ),
-                Padding(
-                  padding: const EdgeInsets.only(top: 8, left: 20),
-                  child: Row(
-                    children: [
-                      Text(
+                Column(
+                  children: [
+                    Text(
                         "Date",
                         style: GoogleFonts.poppins(
                             textStyle: TextStyle(
                                 fontWeight: FontWeight.w400, fontSize: 13)),
                       ),
-                      Padding(
-                        padding: const EdgeInsets.only(left: 11),
-                        child: Text(
-                          ":   03/01/2025",
-                          style: GoogleFonts.poppins(
-                              textStyle: TextStyle(
-                                  fontWeight: FontWeight.w400, fontSize: 13)),
-                        ),
-                      )
-                    ],
-                  ),
-                ),
-                Padding(
-                  padding: const EdgeInsets.only(top: 8, left: 20),
-                  child: Row(
-                    children: [
-                      Text(
+                       Text(
                         "Time",
                         style: GoogleFonts.poppins(
                             textStyle: TextStyle(
                                 fontWeight: FontWeight.w400, fontSize: 13)),
                       ),
-                      Padding(
-                        padding: const EdgeInsets.only(left: 11),
-                        child: Text(
-                          ":   3:00 PM",
-                          style: GoogleFonts.poppins(
-                              textStyle: TextStyle(
-                                  fontWeight: FontWeight.w400, fontSize: 13)),
-                        ),
-                      )
-                    ],
-                  ),
-                ),
-                Padding(
-                  padding: const EdgeInsets.only(top: 8, left: 20),
-                  child: Row(
-                    children: [
-                      Text(
+                       Text(
                         "Location",
                         style: GoogleFonts.poppins(
                             textStyle: TextStyle(
                                 fontWeight: FontWeight.w400, fontSize: 13)),
                       ),
-                      Padding(
-                        padding: const EdgeInsets.only(left: 11),
-                        child: Text(
-                          ":   College Group",
-                          style: GoogleFonts.poppins(
-                              textStyle: TextStyle(
-                                  fontWeight: FontWeight.w400, fontSize: 13)),
-                        ),
-                      )
-                    ],
-                  ),
+                  ],
                 )
+                // Padding(
+                //   padding: const EdgeInsets.only(top: 8, left: 20),
+                //   child: Row(
+                //     children: [
+                      // Text(
+                      //   "Date",
+                      //   style: GoogleFonts.poppins(
+                      //       textStyle: TextStyle(
+                      //           fontWeight: FontWeight.w400, fontSize: 13)),
+                      // ),
+                //       Padding(
+                //         padding: const EdgeInsets.only(left: 11),
+                //         child: Text(
+                //           ":   03/01/2025",
+                //           style: GoogleFonts.poppins(
+                //               textStyle: TextStyle(
+                //                   fontWeight: FontWeight.w400, fontSize: 13)),
+                //         ),
+                //       )
+                //     ],
+                //   ),
+                // ),
+                // Padding(
+                //   padding: const EdgeInsets.only(top: 8, left: 20),
+                //   child: Row(
+                //     children: [
+                      // Text(
+                      //   "Time",
+                      //   style: GoogleFonts.poppins(
+                      //       textStyle: TextStyle(
+                      //           fontWeight: FontWeight.w400, fontSize: 13)),
+                      // ),
+                //       Padding(
+                //         padding: const EdgeInsets.only(left: 11),
+                //         child: Text(
+                //           ":   3:00 PM",
+                //           style: GoogleFonts.poppins(
+                //               textStyle: TextStyle(
+                //                   fontWeight: FontWeight.w400, fontSize: 13)),
+                //         ),
+                //       )
+                //     ],
+                //   ),
+                // ),
+                // Padding(
+                //   padding: const EdgeInsets.only(top: 8, left: 20),
+                //   child: Row(
+                //     children: [
+                      // Text(
+                      //   "Location",
+                      //   style: GoogleFonts.poppins(
+                      //       textStyle: TextStyle(
+                      //           fontWeight: FontWeight.w400, fontSize: 13)),
+                      // ),
+                //       Padding(
+                //         padding: const EdgeInsets.only(left: 11),
+                //         child: Text(
+                //           ":   College Group",
+                //           style: GoogleFonts.poppins(
+                //               textStyle: TextStyle(
+                //                   fontWeight: FontWeight.w400, fontSize: 13)),
+                //         ),
+                //       )
+                //     ],
+                //   ),
+                // )
               ],
             ),
           ),
