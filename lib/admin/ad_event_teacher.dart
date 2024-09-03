@@ -4,7 +4,6 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:colleagueapp/admin/ad_event_teacher_details.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:colleagueapp/admin/ad_event_teacher.dart';
 
 class AdEventTeacher extends StatefulWidget {
   const AdEventTeacher({super.key});

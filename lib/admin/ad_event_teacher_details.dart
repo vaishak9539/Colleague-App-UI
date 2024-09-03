@@ -2,7 +2,6 @@
 
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:colleagueapp/admin/ad_event_teacher.dart';
 class AdEventTeacherDetails extends StatefulWidget {
   const AdEventTeacherDetails({super.key});
 
