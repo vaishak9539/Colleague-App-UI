@@ -16,6 +16,7 @@ class TeSignIn extends StatefulWidget {
 }
 
 class _TeSignInState extends State<TeSignIn> {
+  
   final GlobalKey<FormState> formKey = GlobalKey<FormState>();
   final TextEditingController controllerEmail = TextEditingController();
   final TextEditingController controllerPassword = TextEditingController();
@@ -28,6 +29,7 @@ class _TeSignInState extends State<TeSignIn> {
       var querySnapshot = await FirebaseFirestore.instance
           .collection('TeacherSign')
           .where('Email', isEqualTo: userEmail)
+          .where("Status", isEqualTo: 'accepted')
           .limit(1)
           .get();
 
@@ -53,7 +55,7 @@ class _TeSignInState extends State<TeSignIn> {
             toastLength: Toast.LENGTH_LONG,
             gravity: ToastGravity.BOTTOM,
             timeInSecForIosWeb: 1,
-            backgroundColor: Colors.red,
+            backgroundColor: Colors.black54,
             textColor: Colors.white,
             fontSize: 16.0,
           );
@@ -64,7 +66,7 @@ class _TeSignInState extends State<TeSignIn> {
             toastLength: Toast.LENGTH_LONG,
             gravity: ToastGravity.BOTTOM,
             timeInSecForIosWeb: 1,
-            backgroundColor: Colors.red,
+            backgroundColor: Colors.black54,
             textColor: Colors.white,
             fontSize: 16.0,
           );
@@ -134,6 +136,7 @@ class _TeSignInState extends State<TeSignIn> {
               SizedBox(
                 width: width / 1.1,
                 child: TextFormField(
+                  keyboardType: TextInputType.emailAddress,
                   controller: controllerEmail,
                   decoration: InputDecoration(hintText: "Email Adress"),
                   validator: (value) {

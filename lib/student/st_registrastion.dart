@@ -1,7 +1,7 @@
 // ignore_for_file: prefer_const_literals_to_create_immutables, prefer_const_constructors, use_full_hex_values_for_flutter_colors, prefer_typing_uninitialized_variables, use_build_context_synchronously, avoid_print
 
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:colleagueapp/student/st_Home.dart';
+import 'package:colleagueapp/student/st_sign_in.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
@@ -48,7 +48,9 @@ class _StRegistrationState extends State<StRegistration> {
         Navigator.push(
             context,
             MaterialPageRoute(
-              builder: (context) => StHome(),
+              builder: (context) =>
+              //  StHome(),
+              StSignIn()
             ));
       } on FirebaseAuthException catch (e) {
         print("Failed to register : $e");
@@ -182,6 +184,7 @@ class _StRegistrationState extends State<StRegistration> {
                           width: width / 1.2,
                           child: TextFormField(
                             controller: controllerRegisterNo,
+                            keyboardType: TextInputType.number,
                             decoration: InputDecoration(
                                 border: OutlineInputBorder(
                                     borderRadius: BorderRadius.circular(6))),
@@ -217,6 +220,8 @@ class _StRegistrationState extends State<StRegistration> {
                           width: width / 1.2,
                           child: TextFormField(
                             controller: controllerPhoneNumber,
+                                                        keyboardType: TextInputType.number,
+
                             decoration: InputDecoration(
                                 border: OutlineInputBorder(
                                     borderRadius: BorderRadius.circular(6))),
@@ -255,12 +260,13 @@ class _StRegistrationState extends State<StRegistration> {
                           width: width / 1.2,
                           child: TextFormField(
                             controller: controllerEmail,
+                            keyboardType: TextInputType.emailAddress,
                             decoration: InputDecoration(
                                 border: OutlineInputBorder(
                                     borderRadius: BorderRadius.circular(6))),
                             validator: (value4) {
                               if (value4 == null || value4.isEmpty) {
-                                return "Please enter your Name";
+                                return "Please enter your Email";
                               }
                               if (!RegExp(
                                       r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+")
@@ -300,7 +306,7 @@ class _StRegistrationState extends State<StRegistration> {
                                     borderRadius: BorderRadius.circular(6))),
                             validator: (value5) {
                               if (value5 == null || value5.isEmpty) {
-                                return "Please enter your Name";
+                                return "Please enter your Password";
                               }
                               if (!RegExp((r'[A-Z]')).hasMatch(value5)) {
                                 return 'Uppercase letter is missing';
@@ -311,7 +317,7 @@ class _StRegistrationState extends State<StRegistration> {
                               if (!RegExp((r'[0-9]')).hasMatch(value5)) {
                                 return 'Digit is missing';
                               }
-                              if (value5.length < 5) {
+                              if (value5.length < 8) {
                                 return "Password must have at least 8 characters";
                               }
                               return null;

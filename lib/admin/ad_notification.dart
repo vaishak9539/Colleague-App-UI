@@ -1,5 +1,6 @@
 // ignore_for_file: prefer_const_constructors, sort_child_properties_last, use_full_hex_values_for_flutter_colors
 
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:colleagueapp/admin/add_notification.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -12,8 +13,12 @@ class AdNotification extends StatefulWidget {
 }
 
 class _AdNotificationState extends State<AdNotification> {
+  var size, width, height;
   @override
   Widget build(BuildContext context) {
+    size = MediaQuery.of(context).size;
+    height = size.height;
+    width = size.width;
     return Scaffold(
       appBar: AppBar(
         title: Text(
@@ -23,74 +28,79 @@ class _AdNotificationState extends State<AdNotification> {
         ),
         centerTitle: true,
       ),
-      body: Padding(
-        padding: const EdgeInsets.only(top: 16),
-        child: Column(
-          children: [
-            Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Container(
-                  height: 165,
-                  width: 350,
-                  child: Padding(
-                    padding: const EdgeInsets.only(left: 20, top: 10),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Row(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text(
-                              "Onam",
-                              style: GoogleFonts.poppins(
-                                  color: Color(0xffb4472B2),
-                                  textStyle: TextStyle(
-                                      fontWeight: FontWeight.bold,
-                                      fontSize: 13)),
-                            ),
-                            Padding(
-                              padding: const EdgeInsets.only(left: 240),
-                              child: Icon(Icons.delete),
-                            )
-                          ],
-                        ),
-                        Text(
-                            "We are delighted to announce the upcoming Onam Program, a celebration of joy, culture, and togetherness! The college principal has approved the event, and we can't wait to make it a memorable occasion for all.")
-                      ],
+      body: StreamBuilder(
+        stream: FirebaseFirestore.instance
+            .collection("AddNotification")
+            .snapshots(),
+        builder: (context, snapshot) {
+          if (snapshot.connectionState == ConnectionState.waiting) {
+            return CircularProgressIndicator();
+          }
+          if (snapshot.hasError) {
+            return Center(child: Text("Error : ${snapshot.error}"));
+          }
+          if (snapshot.hasData && snapshot.data!.docs.isEmpty) {
+            Center(child: Text("No Task Added"));
+          }
+          if (snapshot.hasData) {
+            return ListView.builder(
+              itemCount: snapshot.data!.docs.length,
+              itemBuilder: (context, index) {
+                var notificationId = snapshot.data!.docs[index];
+                return Padding(
+                  padding: const EdgeInsets.only(left: 8, bottom: 8, right: 8),
+                  child: Container(
+                    child: ListTile(
+                      title: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Text(
+                            notificationId["EventName"],
+                            style: GoogleFonts.poppins(
+                                color: Color(0xffb4472B2),
+                                textStyle: TextStyle(
+                                    fontWeight: FontWeight.bold, fontSize: 13)),
+                          ),
+                          IconButton(
+                              onPressed: () {
+                                var taskForUpdate = notificationId.id;
+                                FirebaseFirestore.instance.collection("AddNotification").doc(taskForUpdate).delete();
+                              }, icon: Icon(Icons.delete)),
+                        ],
+                      ),
+                      subtitle: Text(notificationId["DescriptionController"]),
+                    ),
+                    decoration: BoxDecoration(
+                      // color: Color(0xf4472B2),
+                      color: Colors.blue[100],
+                      borderRadius: BorderRadius.circular(10),
                     ),
                   ),
-                  decoration: BoxDecoration(
-                    color: Color(0xf4472B2),
-                    borderRadius: BorderRadius.circular(10),
-                  ),
-                ),
-              ],
-            ),
-            SizedBox(
-              height: 440,
-            ),
-            InkWell(
-              onTap: () {
-                Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => AddNotification(),
-                    ));
+                );
               },
-              child: CircleAvatar(
-                radius: 35,
-                backgroundColor: Color(0xffb4472B2),
-                child: Icon(
-                  Icons.add,
-                  size: 50,
-                  color: Colors.white,
-                ),
-              ),
-            )
-          ],
+            );
+          }
+          return CircularProgressIndicator();
+        },
+      ),
+      floatingActionButton: Padding(
+        padding: const EdgeInsets.only(bottom: 30),
+        child: FloatingActionButton(
+          shape:
+              RoundedRectangleBorder(borderRadius: BorderRadius.circular(30)),
+          backgroundColor: Color(0xffb4472B2),
+          onPressed: () {
+            Navigator.push(context,
+                MaterialPageRoute(builder: (ctx) => AddNotification()));
+          },
+          child: Icon(
+            Icons.add,
+            size: 40,
+            color: Colors.white,
+          ),
         ),
       ),
+      floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
     );
   }
 }

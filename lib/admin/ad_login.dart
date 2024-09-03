@@ -38,11 +38,18 @@ class _AdLoginState extends State<AdLogin> {
             var adminID = adminData["AdminID"];
             if (adminID != null) {
               await adminSaveData(adminID);
-              if (mounted) {
-                Navigator.push(
-                    context, MaterialPageRoute(builder: (ctx) => AdRequestRequest()));
-              }
             }
+            Navigator.push(context,
+                MaterialPageRoute(builder: (ctx) => AdRequestRequest()));
+            Fluttertoast.showToast(
+              msg: "Succesfully loggined",
+              toastLength: Toast.LENGTH_SHORT,
+              gravity: ToastGravity.BOTTOM,
+              timeInSecForIosWeb: 1,
+              backgroundColor: Colors.black54,
+              textColor: Colors.white,
+              fontSize: 16.0,
+            );
           } else {
             print('Incorrect password');
             Fluttertoast.showToast(msg: "Incorrect password");
@@ -99,6 +106,7 @@ class _AdLoginState extends State<AdLogin> {
                   padding: const EdgeInsets.only(left: 20, right: 20, top: 10),
                   child: TextFormField(
                     controller: adcontrollerEmail,
+                    keyboardType: TextInputType.emailAddress,
                     decoration: InputDecoration(
                         prefixIcon: Icon(
                           Icons.person,

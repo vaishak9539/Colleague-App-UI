@@ -1,4 +1,4 @@
-// ignore_for_file: prefer_const_constructors, use_full_hex_values_for_flutter_colors
+// ignore_for_file: prefer_const_constructors, use_full_hex_values_for_flutter_colors, prefer_typing_uninitialized_variables, avoid_print
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:colleagueapp/student/st_foodfestival_details.dart';
@@ -13,6 +13,33 @@ class StEventEvent extends StatefulWidget {
 }
 
 class _StEventEventState extends State<StEventEvent> {
+
+   Future<List<Map<String, dynamic>>> getUpcomingEvents() async {
+  DateTime currentDate = DateTime.now();
+  DateTime currentDateWithoutTime = DateTime(
+    currentDate.year,
+    currentDate.month,
+    currentDate.day,
+  ).toLocal();
+  String formattedDate = currentDateWithoutTime.toIso8601String().split('T')[0];
+  print('current date without time: $formattedDate');
+
+  QuerySnapshot<Map<String, dynamic>> querySnapshot = await FirebaseFirestore
+      .instance
+      .collection('AddingEvent')
+      .where('Date', isGreaterThan:  formattedDate)
+      .get();
+
+  List<Map<String, dynamic>> events = querySnapshot.docs.map((doc) {
+    Map<String, dynamic> eventData = doc.data();
+    eventData['eventId'] = doc.id;
+    return eventData;
+  }).toList();
+  print('$events....previous events');
+  return events;
+}
+
+
   var size, width, height;
   @override
   Widget build(BuildContext context) {
@@ -20,24 +47,23 @@ class _StEventEventState extends State<StEventEvent> {
     height = size.height;
     width = size.width;
     return Scaffold(
-      body:  StreamBuilder(
-            stream: FirebaseFirestore.instance
-                .collection("TeacherAddingEvent")
-                .snapshots(),
+      body:  FutureBuilder<List<Map<String, dynamic>>>(
+            future: getUpcomingEvents(),
             builder: (context, snapshot) {
               if (snapshot.connectionState == ConnectionState.waiting) {
                 return Center(
                   child: CircularProgressIndicator(),
                 );
+              }else if (snapshot.hasError) {
+            return Center(child: Text('Error: ${snapshot.error}'));
               }
-
-
               if (snapshot.hasData) {
+                final events = snapshot.data!;
                 return ListView.builder(
                   shrinkWrap: true,
-                  itemCount: snapshot.data!.docs.length,
+                  itemCount: events.length,
                   itemBuilder: (context, index) {
-                    var eventId = snapshot.data!.docs[index];
+                    var eventId = events[index];
                     return Padding(
                       padding: const EdgeInsets.only(top: 15,left: 10,right: 10),
                       child: Container(
@@ -47,7 +73,7 @@ class _StEventEventState extends State<StEventEvent> {
                               color: Color(0xffb4472B2)),
                         child: ListTile(
                           onTap: () {
-                             Navigator.push(context, MaterialPageRoute(builder: (ctx)=>StFoodFestivalDetails()));
+                             Navigator.push(context, MaterialPageRoute(builder: (ctx)=>StFoodFestivalDetails(passingId : eventId)));
                           },
                           title: Text(
                             eventId["EventName"],

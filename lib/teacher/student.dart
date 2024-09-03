@@ -1,11 +1,10 @@
-// ignore_for_file: prefer_const_constructors, prefer_typing_uninitialized_variables
+// ignore_for_file: prefer_const_constructors, prefer_typing_uninitialized_variables, avoid_print
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:colleagueapp/teacher/te_notification.dart';
 import 'package:colleagueapp/teacher/te_profile.dart';
 import 'package:colleagueapp/teacher/te_student_details.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -107,6 +106,13 @@ class _StudentState extends State<Student> {
                         itemCount: snapshot.data!.docs.length,
                         itemBuilder: (ctx, index) {
                           var studentId = snapshot.data!.docs[index];
+
+                          var studentData =
+                              studentId.data() as Map<String, dynamic>;
+                          var imageUrl = studentData.containsKey("imageurl") &&
+                                  studentData["imageurl"] != null
+                              ? studentData["imageurl"]
+                              : '"assets/images/User 1.png"';
                           return Padding(
                             padding: const EdgeInsets.only(left: 4, right: 4),
                             child: Card(
@@ -120,10 +126,10 @@ class _StudentState extends State<Student> {
                                               TeStudentDetails(stId: studentId),
                                         ));
                                   },
-                                  leading: SizedBox(
-                                    width: 35,
-                                    child:
-                                        Image.asset("assets/images/User 1.png"),
+                                  leading: CircleAvatar(
+                                    backgroundImage: imageUrl.startsWith('http')
+                                        ? NetworkImage(imageUrl)
+                                        : AssetImage(imageUrl) as ImageProvider,
                                   ),
                                   title: Text(
                                     studentId["Name"],

@@ -2,6 +2,7 @@
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:colleagueapp/student/st_add_event.dart';
+import 'package:colleagueapp/student/st_event_request_details.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
@@ -13,7 +14,7 @@ class StEventRequest extends StatefulWidget {
 }
 
 class _StEventRequestState extends State<StEventRequest> {
-    var size, width, height;
+  var size, width, height;
 
   @override
   Widget build(BuildContext context) {
@@ -31,15 +32,24 @@ class _StEventRequestState extends State<StEventRequest> {
               itemCount: snapshot.data!.docs.length,
               itemBuilder: (context, index) {
                 var studentRequestID = snapshot.data!.docs[index];
+                final evantName = studentRequestID["Request Event"];
+
                 return Padding(
-                  padding: const EdgeInsets.only(left: 10,right: 10,top: 15),
+                  padding: const EdgeInsets.only(left: 10, right: 10, top: 15),
                   child: Container(
-                     height: height / 16,
-                        decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(6),
-                            color: Color(0xffb4472B2)),
+                    height: height / 16,
+                    decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(6),
+                        color: Color(0xffb4472B2)),
                     child: ListTile(
-                      title: Text(studentRequestID["Request Event"],
+                      onTap: () {
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => StEventRequestDetails(),
+                            ));
+                      },
+                      title: Text(evantName,
                           style: GoogleFonts.poppins(
                             textStyle: TextStyle(
                                 fontSize: 14,
@@ -55,7 +65,6 @@ class _StEventRequestState extends State<StEventRequest> {
           return Center(child: CircularProgressIndicator());
         },
       ),
-
       floatingActionButton: Padding(
         padding: const EdgeInsets.only(bottom: 70),
         child: FloatingActionButton(

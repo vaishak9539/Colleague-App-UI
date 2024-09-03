@@ -1,7 +1,8 @@
-// ignore_for_file: prefer_const_constructors, use_full_hex_values_for_flutter_colors, prefer_typing_uninitialized_variables
+// ignore_for_file: prefer_const_constructors, use_full_hex_values_for_flutter_colors, prefer_typing_uninitialized_variables, avoid_print, use_build_context_synchronously
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 class StAddEvent extends StatefulWidget {
@@ -21,7 +22,8 @@ class _StAddEventState extends State<StAddEvent> {
   final TextEditingController phoneNoController = TextEditingController();
   final TextEditingController descriptionController = TextEditingController();
 
-  Future<void> studentEventRequest() async {
+ Future<void> studentEventRequest(BuildContext context) async {
+  try {
     await FirebaseFirestore.instance.collection("StudentsEventRequest").add({
       "Request Event": requestEventController.text,
       "Name": nameController.text,
@@ -30,7 +32,30 @@ class _StAddEventState extends State<StAddEvent> {
       "Description": departmentController.text,
       "created at": DateTime.now()
     });
+    print("Event request added successfully");
+    Fluttertoast.showToast(
+      msg: "request added successfully",
+      toastLength: Toast.LENGTH_SHORT,
+      gravity: ToastGravity.BOTTOM,
+      timeInSecForIosWeb: 1,
+      backgroundColor: Colors.green,
+      textColor: Colors.white,
+      fontSize: 16.0,
+    );
+  } catch (e) {
+    print("Error adding event request: $e");
+    Fluttertoast.showToast(
+      msg: "request Failed",
+      toastLength: Toast.LENGTH_SHORT,
+      gravity: ToastGravity.BOTTOM,
+      timeInSecForIosWeb: 1,
+      backgroundColor: Colors.red,
+      textColor: Colors.white,
+      fontSize: 16.0,
+    );
   }
+}
+
 
   @override
   Widget build(BuildContext context) {
@@ -235,7 +260,7 @@ class _StAddEventState extends State<StAddEvent> {
                   InkWell(
                     onTap: () {
                       if (formkey.currentState!.validate()) {
-                        studentEventRequest();
+                        studentEventRequest(context);
                         Navigator.pop(context);
                       }
                     },

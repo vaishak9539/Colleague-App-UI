@@ -1,6 +1,8 @@
 // ignore_for_file: prefer_const_literals_to_create_immutables, prefer_const_constructors, use_full_hex_values_for_flutter_colors, prefer_typing_uninitialized_variables, must_be_immutable
 
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 class TeStudentDetails extends StatefulWidget {
@@ -41,7 +43,7 @@ class _TeStudentDetailsState extends State<TeStudentDetails> {
               children: [
                 CircleAvatar(
                   radius: 55,
-                  backgroundImage: AssetImage("assets/images/User 1.png"),
+                  backgroundImage: NetworkImage(widget.stId["imageurl"]),
                 ),
               ],
             ),
@@ -59,46 +61,53 @@ class _TeStudentDetailsState extends State<TeStudentDetails> {
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceAround,
                   children: [
-                    Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Padding(
-                          padding: const EdgeInsets.only(top: 15),
-                          child: Text(
-                            "register No",
-                            style: GoogleFonts.poppins(
-                                textStyle: TextStyle(
-                                    fontSize: 15, fontWeight: FontWeight.w400)),
+                    Padding(
+                      padding: const EdgeInsets.only(left: 20),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Padding(
+                            padding: const EdgeInsets.only(top: 15),
+                            child: Text(
+                              "register No",
+                              style: GoogleFonts.poppins(
+                                  textStyle: TextStyle(
+                                      fontSize: 15,
+                                      fontWeight: FontWeight.w400)),
+                            ),
                           ),
-                        ),
-                        Padding(
-                          padding: const EdgeInsets.only(top: 19),
-                          child: Text(
-                            "Department",
-                            style: GoogleFonts.poppins(
-                                textStyle: TextStyle(
-                                    fontSize: 15, fontWeight: FontWeight.w400)),
+                          Padding(
+                            padding: const EdgeInsets.only(top: 19),
+                            child: Text(
+                              "Department",
+                              style: GoogleFonts.poppins(
+                                  textStyle: TextStyle(
+                                      fontSize: 15,
+                                      fontWeight: FontWeight.w400)),
+                            ),
                           ),
-                        ),
-                        Padding(
-                          padding: const EdgeInsets.only(top: 22),
-                          child: Text(
-                            "Phone No",
-                            style: GoogleFonts.poppins(
-                                textStyle: TextStyle(
-                                    fontSize: 15, fontWeight: FontWeight.w400)),
+                          Padding(
+                            padding: const EdgeInsets.only(top: 22),
+                            child: Text(
+                              "Phone No",
+                              style: GoogleFonts.poppins(
+                                  textStyle: TextStyle(
+                                      fontSize: 15,
+                                      fontWeight: FontWeight.w400)),
+                            ),
                           ),
-                        ),
-                        Padding(
-                          padding: const EdgeInsets.only(top: 22),
-                          child: Text(
-                            "Email ID",
-                            style: GoogleFonts.poppins(
-                                textStyle: TextStyle(
-                                    fontSize: 15, fontWeight: FontWeight.w400)),
+                          Padding(
+                            padding: const EdgeInsets.only(top: 22),
+                            child: Text(
+                              "Email ID",
+                              style: GoogleFonts.poppins(
+                                  textStyle: TextStyle(
+                                      fontSize: 15,
+                                      fontWeight: FontWeight.w400)),
+                            ),
                           ),
-                        ),
-                      ],
+                        ],
+                      ),
                     ),
                     Column(
                       children: [
@@ -176,48 +185,82 @@ class _TeStudentDetailsState extends State<TeStudentDetails> {
                   ],
                 ),
               ],
-            )
-          
-            ,
+            ),
             SizedBox(
-              height: height / 8,
+              height: height / 5,
             ),
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: [
-                Container(
-                  height: height / 15,
-                  width: width / 2.2,
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(10),
-                    color: Color(0xffb4472B2),
+                InkWell(
+                  onTap: () {
+                    FirebaseFirestore.instance
+                        .collection("StudentSign")
+                        .doc(widget.stId['StudentId'])
+                        .update({"Status": "Accepted"});
+
+                        Fluttertoast.showToast(
+                              msg: "Accepted",
+                              toastLength: Toast.LENGTH_SHORT,
+                              gravity: ToastGravity.BOTTOM,
+                              timeInSecForIosWeb: 1,
+                              backgroundColor: Colors.black54,
+                              textColor: Colors.white,
+                              fontSize: 16.0,
+                            );
+                  },
+                  child: Container(
+                    height: height / 15,
+                    width: width / 2.3,
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(10),
+                      color: Color(0xffb4472B2),
+                    ),
+                    child: Center(
+                        child: Text(
+                      "Accept",
+                      style: GoogleFonts.poppins(
+                          textStyle: TextStyle(
+                              fontWeight: FontWeight.bold,
+                              fontSize: 16,
+                              color: Colors.white)),
+                    )),
                   ),
-                  child: Center(
-                      child: Text(
-                    "Accept",
-                    style: GoogleFonts.poppins(
-                        textStyle: TextStyle(
-                            fontWeight: FontWeight.bold,
-                            fontSize: 16,
-                            color: Colors.white)),
-                  )),
                 ),
-                Container(
-                  height: height / 15,
-                  width: width / 2.2,
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(10),
-                    color: Color(0xffb4472B2),
+                InkWell(
+                  onTap: () {
+                    FirebaseFirestore.instance
+                        .collection("StudentSign")
+                        .doc(widget.stId['StudentId'])
+                        .update({"Status": "Rejected"});
+
+                        Fluttertoast.showToast(
+                              msg: "Rejected",
+                              toastLength: Toast.LENGTH_SHORT,
+                              gravity: ToastGravity.BOTTOM,
+                              timeInSecForIosWeb: 1,
+                              backgroundColor: Colors.black54,
+                              textColor: Colors.white,
+                              fontSize: 16.0,
+                            );
+                  },
+                  child: Container(
+                    height: height / 15,
+                    width: width / 2.3,
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(10),
+                      color: Color(0xffb4472B2),
+                    ),
+                    child: Center(
+                        child: Text(
+                      "Reject",
+                      style: GoogleFonts.poppins(
+                          textStyle: TextStyle(
+                              fontWeight: FontWeight.bold,
+                              fontSize: 16,
+                              color: Colors.white)),
+                    )),
                   ),
-                  child: Center(
-                      child: Text(
-                    "Reject",
-                    style: GoogleFonts.poppins(
-                        textStyle: TextStyle(
-                            fontWeight: FontWeight.bold,
-                            fontSize: 16,
-                            color: Colors.white)),
-                  )),
                 ),
               ],
             )

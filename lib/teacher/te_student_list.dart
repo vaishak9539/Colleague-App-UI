@@ -1,4 +1,4 @@
-// ignore_for_file: prefer_const_literals_to_create_immutables, prefer_const_constructors
+// ignore_for_file: prefer_const_literals_to_create_immutables, prefer_const_constructors, use_full_hex_values_for_flutter_colors
 import 'package:colleagueapp/teacher/event.dart';
 import 'package:colleagueapp/teacher/student.dart';
 import 'package:flutter/material.dart';

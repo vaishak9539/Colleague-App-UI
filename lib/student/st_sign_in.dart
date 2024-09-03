@@ -28,6 +28,7 @@ class _StSignInState extends State<StSignIn> {
       var querySnapshot = await FirebaseFirestore.instance
           .collection("StudentSign")
           .where("Email", isEqualTo: studentEmail)
+          .where("Status", isEqualTo: 'Accepted')
           .limit(1)
           .get();
 
@@ -37,26 +38,50 @@ class _StSignInState extends State<StSignIn> {
         if (passwordFromDB != null && passwordFromDB == studentPassword) {
           var studentUid = studentsData["StudentId"];
           if (studentUid != null) {
-            await studentsavedata(studentUid);
+            SharedPreferences prefs = await SharedPreferences.getInstance();
+            await prefs.setString("StudentUid", studentUid);
           }
+          SharedPreferences prefs = await SharedPreferences.getInstance();
+          String? stid = prefs.getString("StudentUid");
+          print("Shared Preference Student ID: $stid");
+
           Navigator.push(context, MaterialPageRoute(builder: (context) {
             return StHome();
           }));
-          Fluttertoast.showToast(msg: "Successfully logged in");
+          Fluttertoast.showToast(
+            msg: 'Succesfully loggined',
+            toastLength: Toast.LENGTH_LONG,
+            gravity: ToastGravity.BOTTOM,
+            timeInSecForIosWeb: 1,
+            backgroundColor: Colors.black54,
+            textColor: Colors.white,
+            fontSize: 16.0,
+          );
         } else {
           print('Incorrect password');
-          Fluttertoast.showToast(msg: "Incorrect password");
+          Fluttertoast.showToast(
+            msg: 'Incorrect Password',
+            toastLength: Toast.LENGTH_LONG,
+            gravity: ToastGravity.BOTTOM,
+            timeInSecForIosWeb: 1,
+            backgroundColor: Colors.black54,
+            textColor: Colors.white,
+            fontSize: 16.0,
+          );
         }
       } else {
         print('User not found');
-        Fluttertoast.showToast(msg: "User not found");
+        Fluttertoast.showToast(
+            msg: 'User not found',
+            toastLength: Toast.LENGTH_LONG,
+            gravity: ToastGravity.BOTTOM,
+            timeInSecForIosWeb: 1,
+            backgroundColor: Colors.black54,
+            textColor: Colors.white,
+            fontSize: 16.0,
+          );
       }
     }
-  }
-
-  Future<void> studentsavedata(String uid) async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    await prefs.setString("Student Uid", uid);
   }
 
   var size, width, height;
@@ -82,8 +107,8 @@ class _StSignInState extends State<StSignIn> {
                     child: Text(
                       "Sign in",
                       style: GoogleFonts.poppins(
-                          textStyle:
-                              TextStyle(fontWeight: FontWeight.w500, fontSize: 33)),
+                          textStyle: TextStyle(
+                              fontWeight: FontWeight.w500, fontSize: 33)),
                     ),
                   )
                 ],
@@ -95,8 +120,8 @@ class _StSignInState extends State<StSignIn> {
                     child: Text(
                       "Sign into your account",
                       style: GoogleFonts.poppins(
-                          textStyle:
-                              TextStyle(fontWeight: FontWeight.w400, fontSize: 20)),
+                          textStyle: TextStyle(
+                              fontWeight: FontWeight.w400, fontSize: 20)),
                     ),
                   )
                 ],
@@ -108,6 +133,7 @@ class _StSignInState extends State<StSignIn> {
                 width: width / 1.1,
                 child: TextFormField(
                   controller: stcontrollerEmail,
+                  keyboardType: TextInputType.emailAddress,
                   decoration: InputDecoration(hintText: "Email Address"),
                   validator: (value) {
                     if (value == null || value.isEmpty) {
@@ -129,6 +155,7 @@ class _StSignInState extends State<StSignIn> {
                 width: width / 1.1,
                 child: TextFormField(
                   controller: stcontrollerPassword,
+                  keyboardType: TextInputType.multiline,
                   decoration: InputDecoration(hintText: "Password"),
                   validator: (value1) {
                     if (value1 == null || value1.isEmpty) {
@@ -196,8 +223,8 @@ class _StSignInState extends State<StSignIn> {
                       child: Text(
                         "Sign up",
                         style: GoogleFonts.poppins(
-                          textStyle:
-                              TextStyle(fontSize: 15, fontWeight: FontWeight.w400),
+                          textStyle: TextStyle(
+                              fontSize: 15, fontWeight: FontWeight.w400),
                         ),
                       )),
                 ],

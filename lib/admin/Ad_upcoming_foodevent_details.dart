@@ -1,10 +1,11 @@
-// ignore_for_file: prefer_const_constructors, use_full_hex_values_for_flutter_colors
+// ignore_for_file: prefer_const_constructors, use_full_hex_values_for_flutter_colors, prefer_const_literals_to_create_immutables, prefer_typing_uninitialized_variables, prefer_const_constructors_in_immutables
 
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 class AdUpcomingFootEventDetails extends StatefulWidget {
-  const AdUpcomingFootEventDetails({super.key});
+  final adEventId;
+  AdUpcomingFootEventDetails({super.key, required this.adEventId});
 
   @override
   State<AdUpcomingFootEventDetails> createState() =>
@@ -13,8 +14,12 @@ class AdUpcomingFootEventDetails extends StatefulWidget {
 
 class _AdUpcomingFootEventDetailsState
     extends State<AdUpcomingFootEventDetails> {
+        var size, width, height;
   @override
   Widget build(BuildContext context) {
+    size = MediaQuery.of(context).size;
+    height = size.height;
+    width = size.width;
     return Scaffold(
       appBar: AppBar(
         title: Text(
@@ -27,9 +32,9 @@ class _AdUpcomingFootEventDetailsState
       body: Column(
         children: [
           Padding(
-            padding: const EdgeInsets.only(top: 30),
+            padding: const EdgeInsets.only(top: 20),
             child: Text(
-              "Food festival",
+              widget.adEventId["EventName"],
               style: GoogleFonts.poppins(
                   textStyle: TextStyle(
                       fontSize: 15,
@@ -37,83 +42,113 @@ class _AdUpcomingFootEventDetailsState
                       color: Color(0xffb4472B2))),
             ),
           ),
-          Padding(
-            padding: const EdgeInsets.only(top: 20, left: 70),
-            child: Row(
-              children: [
-                Text(
-                  "Date",
-                  style: GoogleFonts.poppins(
-                      textStyle:
-                          TextStyle(fontSize: 14, fontWeight: FontWeight.w400)),
-                ),
-                Padding(
-                  padding: const EdgeInsets.only(left: 106),
-                  child: Text(
-                    ":        05/09/2025",
-                    style: GoogleFonts.poppins(
-                        textStyle: TextStyle(
-                            fontSize: 13, fontWeight: FontWeight.w400)),
+          SizedBox(
+            height: height/7,
+            width: width/1.4,
+            child: Padding(
+              padding: const EdgeInsets.only(top: 15),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                children: [
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Padding(
+                        padding: const EdgeInsets.only(top: 4),
+                        child: Text(
+                          "Date",
+                          style: GoogleFonts.poppins(
+                              textStyle: TextStyle(
+                                  fontSize: 14, fontWeight: FontWeight.w400)),
+                        ),
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.only(top: 14),
+                        child: Text(
+                          "Time",
+                          style: GoogleFonts.poppins(
+                              textStyle: TextStyle(
+                                  fontSize: 14, fontWeight: FontWeight.w400)),
+                        ),
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.only(top: 15),
+                        child: Text(
+                          "Location",
+                          style: GoogleFonts.poppins(
+                              textStyle: TextStyle(
+                                  fontSize: 14, fontWeight: FontWeight.w400)),
+                        ),
+                      ),
+                    ],
                   ),
-                ),
-              ],
+                  Column(
+                    children: [
+                      Text(":",
+                          style: TextStyle(
+                              fontSize: 18, fontWeight: FontWeight.w400)),
+                      Padding(
+                        padding: const EdgeInsets.only(top: 10),
+                        child: Text(":",
+                            style: TextStyle(
+                                fontSize: 18, fontWeight: FontWeight.w400)),
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.only(top: 10),
+                        child: Text(":",
+                            style: TextStyle(
+                                fontSize: 18, fontWeight: FontWeight.w400)),
+                      ),
+                    ],
+                  ),
+                  Column(
+                    children: [
+                      Padding(
+                        padding: const EdgeInsets.only(top: 4),
+                        child: Text(
+                          widget.adEventId["Date"],
+                          style: GoogleFonts.poppins(
+                              textStyle: TextStyle(
+                                  fontSize: 14, fontWeight: FontWeight.w400)),
+                        ),
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.only(top: 14),
+                        child: Text(
+                          widget.adEventId["Time"],
+                          style: GoogleFonts.poppins(
+                              textStyle: TextStyle(
+                                  fontSize: 14, fontWeight: FontWeight.w400)),
+                        ),
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.only(top: 15),
+                        child: Text(
+                          widget.adEventId["Location"],
+                          style: GoogleFonts.poppins(
+                              textStyle: TextStyle(
+                                  fontSize: 14, fontWeight: FontWeight.w400)),
+                        ),
+                      ),
+                    ],
+                  ),
+                ],
+              ),
             ),
           ),
+         
           Padding(
-            padding: const EdgeInsets.only(top: 20, left: 70),
-            child: Row(
-              children: [
-                Text(
-                  "Time",
-                  style: GoogleFonts.poppins(
-                      textStyle:
-                          TextStyle(fontSize: 14, fontWeight: FontWeight.w400)),
-                ),
-                Padding(
-                  padding: const EdgeInsets.only(left: 106),
-                  child: Text(
-                    ":      9:00 AM",
-                    style: GoogleFonts.poppins(
-                        textStyle: TextStyle(
-                            fontSize: 13, fontWeight: FontWeight.w400)),
-                  ),
-                ),
-              ],
-            ),
-          ),
-          Padding(
-            padding: const EdgeInsets.only(top: 20, left: 70),
-            child: Row(
-              children: [
-                Text(
-                  "Location",
-                  style: GoogleFonts.poppins(
-                      textStyle:
-                          TextStyle(fontSize: 14, fontWeight: FontWeight.w400)),
-                ),
-                Padding(
-                  padding: const EdgeInsets.only(left: 80),
-                  child: Text(
-                    ":      College Ground",
-                    style: GoogleFonts.poppins(
-                        textStyle: TextStyle(
-                            fontSize: 13, fontWeight: FontWeight.w400)),
-                  ),
-                ),
-              ],
-            ),
-          ),
-          Padding(
-            padding: const EdgeInsets.only(top: 20),
+            padding: const EdgeInsets.only(top: 10),
             child: SizedBox(
-              height: 160,
-              width: 370,
+              height: height/5.5,
+              width: 350,
               child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Row(
                     children: [
                       Padding(
-                        padding: const EdgeInsets.only(left: 10, top: 10),
+                        padding: const EdgeInsets.only(left: 20, top: 10),
                         child: Text(
                           "Description  :",
                           style: GoogleFonts.poppins(
@@ -127,7 +162,7 @@ class _AdUpcomingFootEventDetailsState
                     padding:
                         const EdgeInsets.only(left: 10, top: 10, right: 10),
                     child: Text(
-                      "traditional genres such as folk and classical music, a music festival can be defined as a community event, with performances of singing and instrument playing, that is often presented with a theme such as a music genre ",
+                      widget.adEventId["Description"],
                       style: GoogleFonts.poppins(
                           textStyle: TextStyle(
                               fontWeight: FontWeight.w400, fontSize: 13)),
@@ -193,7 +228,7 @@ class _AdUpcomingFootEventDetailsState
                 padding: const EdgeInsets.only(left: 15, top: 5),
                 child: Container(
                   height: 58,
-                  width: 380,
+                  width: 300,
                   decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(10),
                     color: Colors.grey[200],
@@ -207,7 +242,7 @@ class _AdUpcomingFootEventDetailsState
             ],
           ),
           SizedBox(
-            height: 80,
+            height: 10,
           ),
           Row(
             mainAxisAlignment: MainAxisAlignment.center,

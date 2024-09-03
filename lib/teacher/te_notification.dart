@@ -1,6 +1,8 @@
-// ignore_for_file: prefer_const_literals_to_create_immutables, use_full_hex_values_for_flutter_colors, prefer_const_constructors
+// ignore_for_file: prefer_const_literals_to_create_immutables, use_full_hex_values_for_flutter_colors, prefer_const_constructors, sort_child_properties_last
 
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 class TeNotification extends StatefulWidget {
   const TeNotification({super.key});
@@ -24,45 +26,57 @@ class _TeNotificationState extends State<TeNotification> {
         ),
         centerTitle: true,
       ),
-      body: Column(
-        children: [
-          Padding(
-            padding: const EdgeInsets.only(
-              left: 15,right: 15
-            ),
-            child: Container(
-              height: height/5.3,
-              width: width/1,
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(6),
-                color: Color(0xF4472B2),
-              ),
-              child: Column(
-                children: [
-                  Row(
-                    children: [
-                      Padding(
-                        padding: const EdgeInsets.only(left: 15, top: 10),
-                        child: Text(
-                          "Onam",
-                          style: TextStyle(
-                              color: Color(0xff4472B2),
-                              fontSize: 14,
-                              fontWeight: FontWeight.bold),
-                        ),
+      body: StreamBuilder(
+        stream: FirebaseFirestore.instance
+            .collection("AddNotification")
+            .snapshots(),
+        builder: (context, snapshot) {
+          if (snapshot.connectionState == ConnectionState.waiting) {
+            return CircularProgressIndicator();
+          }
+          if (snapshot.hasError) {
+            return Center(child: Text("Error : ${snapshot.error}"));
+          }
+          if (snapshot.hasData && snapshot.data!.docs.isEmpty) {
+            Center(
+              child: Text("No Task Addad",
+                  style: TextStyle(
+                    fontWeight: FontWeight.w500,
+                    color: Colors.black,
+                    fontSize: 18,
+                  )),
+            );
+          }
+          if (snapshot.hasData) {
+            return ListView.builder(
+              itemCount: snapshot.data!.docs.length,
+              itemBuilder: (context, index) {
+                var notificationId = snapshot.data!.docs[index];
+                return Padding(
+                  padding: const EdgeInsets.only(left: 8, bottom: 8, right: 8),
+                  child: Container(
+                    child: ListTile(
+                      title: Text(
+                        notificationId["EventName"],
+                        style: GoogleFonts.poppins(
+                            color: Color(0xffb4472B2),
+                            textStyle: TextStyle(
+                                fontWeight: FontWeight.bold, fontSize: 13)),
                       ),
-                    ],
+                      subtitle: Text(notificationId["DescriptionController"]),
+                    ),
+                    decoration: BoxDecoration(
+                      // color: Color(0xf4472B2),
+                      color: Colors.blue[100],
+                      borderRadius: BorderRadius.circular(10),
+                    ),
                   ),
-                  Expanded(
-                    child: Padding(
-                      padding: const EdgeInsets.only(left: 15,top: 10),
-                      child: Text("We are delighted to announce the upcoming Onam Program, a celebration of joy, culture, and togetherness! The college principal has approved the event, and we can't wait to make it a memorable occasion for all."),
-                    ))
-                ],
-              ),
-            ),
-          ),
-        ],
+                );
+              },
+            );
+          }
+          return CircularProgressIndicator();
+        },
       ),
     );
   }

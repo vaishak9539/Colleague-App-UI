@@ -1,7 +1,7 @@
 // ignore_for_file: prefer_const_constructors, use_build_context_synchronously, avoid_print, prefer_const_literals_to_create_immutables, use_full_hex_values_for_flutter_colors, prefer_typing_uninitialized_variables
 
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:colleagueapp/teacher/te_student_list.dart';
+import 'package:colleagueapp/teacher/te_sign_in.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
@@ -44,7 +44,10 @@ class _TeRegistrationState extends State<TeRegistration> {
           Fluttertoast.showToast(msg: "regisration succussfully");
         Navigator.push(
           context,
-          MaterialPageRoute(builder: (context) => TeStudentList()),
+          MaterialPageRoute(builder: (context) => 
+          // TeStudentList()
+          TeSignIn()
+          ),
         );
       } on FirebaseAuthException catch (e) {
         print('Failed to register user: $e');
@@ -195,6 +198,7 @@ class _TeRegistrationState extends State<TeRegistration> {
                           width: width / 1.2,
                           child: TextFormField(
                             controller: controllerPhoneNumber,
+                            keyboardType: TextInputType.number,
                             decoration: InputDecoration(
                               border: OutlineInputBorder(
                                 borderRadius: BorderRadius.circular(6),
@@ -234,6 +238,7 @@ class _TeRegistrationState extends State<TeRegistration> {
                           width: width / 1.2,
                           child: TextFormField(
                             controller: controllerEmail,
+                            keyboardType: TextInputType.emailAddress,
                             decoration: InputDecoration(
                               border: OutlineInputBorder(
                                 borderRadius: BorderRadius.circular(6),

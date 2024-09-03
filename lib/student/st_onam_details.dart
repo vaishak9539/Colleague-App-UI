@@ -1,4 +1,4 @@
-// ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables, use_full_hex_values_for_flutter_colors, depend_on_referenced_packages
+// ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables, use_full_hex_values_for_flutter_colors, depend_on_referenced_packages, prefer_const_constructors_in_immutables
 
 import 'package:colleagueapp/student/st_details-details.dart';
 import 'package:colleagueapp/student/st_details_photos.dart';
@@ -7,7 +7,8 @@ import 'package:google_fonts/google_fonts.dart';
 
 
 class StOnamDetails extends StatefulWidget {
-  const StOnamDetails({super.key});
+  final  eventData;
+   StOnamDetails({super.key,required this.eventData});
 
   @override
   State<StOnamDetails> createState() => _StOnamDetailsState();
@@ -25,6 +26,7 @@ class _StOnamDetailsState extends State<StOnamDetails> {
                 textStyle: TextStyle(fontWeight: FontWeight.w500, fontSize: 18),
               )),
           centerTitle: true,
+          
         ),
         body:Column(
           children: [
@@ -54,7 +56,7 @@ class _StOnamDetailsState extends State<StOnamDetails> {
             ]),
             Expanded(
               child: TabBarView(children: [
-                StDetailsDetails(),StDetailsPhotos()
+                StDetailsDetails(eventid : widget.eventData),StDetailsPhotos(eventid : widget.eventData)
               ]),
             )
           ],

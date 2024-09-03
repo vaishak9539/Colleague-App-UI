@@ -1,8 +1,9 @@
-// ignore_for_file: prefer_const_literals_to_create_immutables, prefer_const_constructors, use_full_hex_values_for_flutter_colors, prefer_typing_uninitialized_variables
+// ignore_for_file: prefer_const_constructors, prefer_typing_uninitialized_variables, use_full_hex_values_for_flutter_colors
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:intl/intl.dart';
 
 class TeAddEvent extends StatefulWidget {
   const TeAddEvent({super.key});
@@ -22,13 +23,44 @@ class _TeAddEventState extends State<TeAddEvent> {
   final TextEditingController descriptionController = TextEditingController();
 
   Future<void> teacherAddingEvent() async {
-    await FirebaseFirestore.instance.collection("TeacherAddingEvent").add({
+    await FirebaseFirestore.instance.collection("TeacherAddEvent").add({
       "EventName": eventNameController.text,
       "Date": dateController.text,
       "Time": timeController.text,
       "Location": locationController.text,
       "Description": descriptionController.text,
     });
+  }
+
+  DateTime? selectedDate;
+  TimeOfDay? selectedTime;
+
+  Future<void> pickDate() async {
+    DateTime? picked = await showDatePicker(
+      context: context,
+      initialDate: DateTime.now(),
+      firstDate: DateTime(1999, 1, 1),
+      lastDate: DateTime(2100, 1, 1),
+    );
+    if (picked != null && picked != selectedDate) {
+      setState(() {
+        selectedDate = picked;
+        dateController.text = DateFormat("dd-MM-yyyy").format(picked);
+      });
+    }
+  }
+
+  Future<void> pickTime() async {
+    TimeOfDay? picked = await showTimePicker(
+      context: context,
+      initialTime: TimeOfDay.now(),
+    );
+    if (picked != null && picked != selectedTime) {
+      setState(() {
+        selectedTime = picked;
+        timeController.text = picked.format(context);
+      });
+    }
   }
 
   @override
@@ -105,7 +137,13 @@ class _TeAddEventState extends State<TeAddEvent> {
                       width: width / 1.1,
                       child: TextFormField(
                         controller: dateController,
+                        readOnly: true,
                         decoration: InputDecoration(
+                            suffixIcon: IconButton(
+                                onPressed: () {
+                                  pickDate();
+                                },
+                                icon: Icon(Icons.date_range_outlined)),
                             border: OutlineInputBorder(
                                 borderRadius: BorderRadius.circular(6))),
                         validator: (value) {
@@ -140,7 +178,13 @@ class _TeAddEventState extends State<TeAddEvent> {
                       width: width / 1.1,
                       child: TextFormField(
                         controller: timeController,
+                        readOnly: true,
                         decoration: InputDecoration(
+                            suffixIcon: IconButton(
+                                onPressed: () {
+                                  pickTime();
+                                },
+                                icon: Icon(Icons.access_time_outlined)),
                             border: OutlineInputBorder(
                                 borderRadius: BorderRadius.circular(6))),
                         validator: (value) {
@@ -206,7 +250,6 @@ class _TeAddEventState extends State<TeAddEvent> {
                   Padding(
                     padding: const EdgeInsets.only(left: 20, top: 6),
                     child: SizedBox(
-                      // height: height / 18,
                       width: width / 1.1,
                       child: TextFormField(
                         controller: descriptionController,

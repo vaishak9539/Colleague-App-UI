@@ -1,11 +1,13 @@
-// ignore_for_file: prefer_const_literals_to_create_immutables, prefer_const_constructors, use_full_hex_values_for_flutter_colors
+// ignore_for_file: must_be_immutable, prefer_typing_uninitialized_variables, prefer_const_constructors
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 class FoodFestivalDetails extends StatefulWidget {
-  const FoodFestivalDetails({super.key});
+  final Map<String, dynamic> eventData;
+  var eventdata;
+  FoodFestivalDetails({super.key, required this.eventData});
 
   @override
   State<FoodFestivalDetails> createState() => _FoodFestivalDetailsState();
@@ -13,11 +15,13 @@ class FoodFestivalDetails extends StatefulWidget {
 
 class _FoodFestivalDetailsState extends State<FoodFestivalDetails> {
   var size, width, height;
+
   @override
   Widget build(BuildContext context) {
     size = MediaQuery.of(context).size;
     height = size.height;
     width = size.width;
+
     return Scaffold(
       appBar: AppBar(
         title: Text("Details",
@@ -29,11 +33,11 @@ class _FoodFestivalDetailsState extends State<FoodFestivalDetails> {
       body: Column(
         children: [
           Container(
-            height: 150,
-            width: 370,
+            height: height / 6,
+            width: width / 1.1,
             decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(6),
-              color: Color(0xF4472B2),
+              color: Color(0x0f4472b2),
             ),
             child: Column(
               children: [
@@ -42,7 +46,7 @@ class _FoodFestivalDetailsState extends State<FoodFestivalDetails> {
                     Padding(
                       padding: const EdgeInsets.only(left: 20, top: 10),
                       child: Text(
-                        "Food Festival",
+                        widget.eventData["EventName"],
                         style: TextStyle(
                             color: Color(0xff4472B2),
                             fontSize: 15,
@@ -51,94 +55,105 @@ class _FoodFestivalDetailsState extends State<FoodFestivalDetails> {
                     ),
                   ],
                 ),
-                Column(
+                Row(
                   children: [
-                    Text(
-                        "Date",
-                        style: GoogleFonts.poppins(
-                            textStyle: TextStyle(
-                                fontWeight: FontWeight.w400, fontSize: 13)),
-                      ),
-                       Text(
-                        "Time",
-                        style: GoogleFonts.poppins(
-                            textStyle: TextStyle(
-                                fontWeight: FontWeight.w400, fontSize: 13)),
-                      ),
-                       Text(
-                        "Location",
-                        style: GoogleFonts.poppins(
-                            textStyle: TextStyle(
-                                fontWeight: FontWeight.w400, fontSize: 13)),
-                      ),
+                    Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Padding(
+                          padding: const EdgeInsets.only(top: 15, left: 25),
+                          child: Text(
+                            "Date",
+                            style: GoogleFonts.poppins(
+                                textStyle: TextStyle(
+                                    fontWeight: FontWeight.w400, fontSize: 13)),
+                          ),
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.only(top: 10, left: 25),
+                          child: Text(
+                            "Time",
+                            style: GoogleFonts.poppins(
+                                textStyle: TextStyle(
+                                    fontWeight: FontWeight.w400, fontSize: 13)),
+                          ),
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.only(left: 25, top: 15),
+                          child: Text(
+                            "Location",
+                            style: GoogleFonts.poppins(
+                                textStyle: TextStyle(
+                                    fontWeight: FontWeight.w400, fontSize: 13)),
+                          ),
+                        ),
+                      ],
+                    ),
+                    Column(
+                      children: [
+                        Padding(
+                          padding: const EdgeInsets.only(left: 10, top: 15),
+                          child: Text(
+                            ":",
+                            style: GoogleFonts.poppins(
+                                textStyle: TextStyle(
+                                    fontWeight: FontWeight.w400, fontSize: 13)),
+                          ),
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.only(top: 10, left: 10),
+                          child: Text(
+                            ":",
+                            style: GoogleFonts.poppins(
+                                textStyle: TextStyle(
+                                    fontWeight: FontWeight.w400, fontSize: 13)),
+                          ),
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.only(left: 10, top: 15),
+                          child: Text(
+                            ":",
+                            style: GoogleFonts.poppins(
+                                textStyle: TextStyle(
+                                    fontWeight: FontWeight.w400, fontSize: 13)),
+                          ),
+                        ),
+                      ],
+                    ),
+                    Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Padding(
+                          padding: const EdgeInsets.only(top: 15, left: 25),
+                          child: Text(
+                            widget.eventData["Date"],
+                            style: GoogleFonts.poppins(
+                                textStyle: TextStyle(
+                                    fontWeight: FontWeight.w400, fontSize: 13)),
+                          ),
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.only(top: 10, left: 25),
+                          child: Text(
+                            widget.eventData["Time"],
+                            style: GoogleFonts.poppins(
+                                textStyle: TextStyle(
+                                    fontWeight: FontWeight.w400, fontSize: 13)),
+                          ),
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.only(left: 25, top: 15),
+                          child: Text(
+                            widget.eventData["Location"],
+                            style: GoogleFonts.poppins(
+                                textStyle: TextStyle(
+                                    fontWeight: FontWeight.w400, fontSize: 13)),
+                          ),
+                        ),
+                      ],
+                    ),
                   ],
-                )
-                // Padding(
-                //   padding: const EdgeInsets.only(top: 8, left: 20),
-                //   child: Row(
-                //     children: [
-                      // Text(
-                      //   "Date",
-                      //   style: GoogleFonts.poppins(
-                      //       textStyle: TextStyle(
-                      //           fontWeight: FontWeight.w400, fontSize: 13)),
-                      // ),
-                //       Padding(
-                //         padding: const EdgeInsets.only(left: 11),
-                //         child: Text(
-                //           ":   03/01/2025",
-                //           style: GoogleFonts.poppins(
-                //               textStyle: TextStyle(
-                //                   fontWeight: FontWeight.w400, fontSize: 13)),
-                //         ),
-                //       )
-                //     ],
-                //   ),
-                // ),
-                // Padding(
-                //   padding: const EdgeInsets.only(top: 8, left: 20),
-                //   child: Row(
-                //     children: [
-                      // Text(
-                      //   "Time",
-                      //   style: GoogleFonts.poppins(
-                      //       textStyle: TextStyle(
-                      //           fontWeight: FontWeight.w400, fontSize: 13)),
-                      // ),
-                //       Padding(
-                //         padding: const EdgeInsets.only(left: 11),
-                //         child: Text(
-                //           ":   3:00 PM",
-                //           style: GoogleFonts.poppins(
-                //               textStyle: TextStyle(
-                //                   fontWeight: FontWeight.w400, fontSize: 13)),
-                //         ),
-                //       )
-                //     ],
-                //   ),
-                // ),
-                // Padding(
-                //   padding: const EdgeInsets.only(top: 8, left: 20),
-                //   child: Row(
-                //     children: [
-                      // Text(
-                      //   "Location",
-                      //   style: GoogleFonts.poppins(
-                      //       textStyle: TextStyle(
-                      //           fontWeight: FontWeight.w400, fontSize: 13)),
-                      // ),
-                //       Padding(
-                //         padding: const EdgeInsets.only(left: 11),
-                //         child: Text(
-                //           ":   College Group",
-                //           style: GoogleFonts.poppins(
-                //               textStyle: TextStyle(
-                //                   fontWeight: FontWeight.w400, fontSize: 13)),
-                //         ),
-                //       )
-                //     ],
-                //   ),
-                // )
+                ),
               ],
             ),
           ),
@@ -173,7 +188,7 @@ class _FoodFestivalDetailsState extends State<FoodFestivalDetails> {
                             child: Image.asset("assets/images/User 1.png"),
                           ),
                           title: Text(
-                            "student Name",
+                            "Student Name",
                             style: GoogleFonts.poppins(
                               textStyle: TextStyle(
                                   fontSize: 14, fontWeight: FontWeight.w400),
@@ -198,8 +213,8 @@ class _FoodFestivalDetailsState extends State<FoodFestivalDetails> {
                                             MainAxisAlignment.center,
                                         actions: [
                                           InkWell(
-                                            onTap:(){
-                                               Navigator.pop(ctx);
+                                            onTap: () {
+                                              Navigator.pop(ctx);
                                             },
                                             child: Container(
                                               height: 40,
@@ -214,10 +229,10 @@ class _FoodFestivalDetailsState extends State<FoodFestivalDetails> {
                                                   "Submit",
                                                   style: GoogleFonts.poppins(
                                                       textStyle: TextStyle(
-                                                    fontWeight: FontWeight.w500,
-                                                    fontSize: 13,
-                                                    color: Colors.white
-                                                  )),
+                                                          fontWeight:
+                                                              FontWeight.w500,
+                                                          fontSize: 13,
+                                                          color: Colors.white)),
                                                 ),
                                               ),
                                             ),

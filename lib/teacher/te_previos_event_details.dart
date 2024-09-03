@@ -7,7 +7,8 @@ import 'package:google_fonts/google_fonts.dart';
 
 
 class TePreviosEventDetails extends StatefulWidget {
-  const TePreviosEventDetails({super.key});
+  final eventid;
+   TePreviosEventDetails({super.key, required this.eventid});
 
   @override
   State<TePreviosEventDetails> createState() => _TePreviosEventDetailsState();
@@ -59,7 +60,8 @@ class _TePreviosEventDetailsState extends State<TePreviosEventDetails> {
             ]),
             Expanded(
               child: TabBarView(children: [
-                PreviosOnamDetails(),PreviosOnamPhotos()
+                PreviosOnamDetails(neweventid :widget.eventid),
+                PreviosOnamPhotos()
               ]),
             )
           ],

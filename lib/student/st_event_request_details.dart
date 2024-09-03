@@ -34,7 +34,7 @@ class _StEventRequestDetailsState extends State<StEventRequestDetails> {
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               CircleAvatar(
-                  radius: 55,
+                  radius: 50,
                   backgroundImage: AssetImage("assets/images/User 2.png")),
             ],
           ),
