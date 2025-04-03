@@ -1,6 +1,7 @@
 // ignore_for_file: prefer_const_constructors, use_build_context_synchronously, avoid_print, prefer_const_literals_to_create_immutables, use_full_hex_values_for_flutter_colors, prefer_typing_uninitialized_variables
 
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:colleagueapp/teacher/controllers/teacher_sign_controller.dart';
 import 'package:colleagueapp/teacher/te_sign_in.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -21,6 +22,8 @@ class _TeRegistrationState extends State<TeRegistration> {
   final TextEditingController controllerEmail = TextEditingController();
   final TextEditingController controllerPassword = TextEditingController();
 
+ 
+
   Future<void> validationChecking() async {
     if (formKey.currentState!.validate()) {
       try {
@@ -29,6 +32,8 @@ class _TeRegistrationState extends State<TeRegistration> {
                 email: controllerEmail.text, password: controllerPassword.text);
                 
         String teacherAuthenticationUid = userCredential.user!.uid;
+
+       
 
         await FirebaseFirestore.instance
             .collection("TeacherSign")
@@ -40,7 +45,7 @@ class _TeRegistrationState extends State<TeRegistration> {
           "Email": controllerEmail.text,
           "Password": controllerPassword.text,
           'TeacherId': teacherAuthenticationUid,
-        });
+        }).then((_) {});
           Fluttertoast.showToast(msg: "regisration succussfully");
         Navigator.push(
           context,
